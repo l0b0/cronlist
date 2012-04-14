@@ -277,7 +277,7 @@ char *read_time_entry (char *buf, struct time_entry *res)
     p++;
     keyword = p;
     while (*p && isalpha(*p)) p++;
-    len = p - keyword + 1;
+    len = p - keyword;
     if      (!strncmp(keyword, "reboot",   len)) /* ignore, keep empty time_entry */ ;
     else if (!strncmp(keyword, "yearly",   len)) read_time_entry("0 0 1 1 *", res);
     else if (!strncmp(keyword, "annually", len)) read_time_entry("0 0 1 1 *", res);
