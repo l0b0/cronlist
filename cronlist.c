@@ -487,7 +487,7 @@ void get_tm_from_date (char *datespec, struct tm *dest) {
   fgets(number, 20, p);
   pclose(p);
   if (!isdigit(number[0])) die("command ‘%s’ didn't return a meaningful value", cmd);
-  n = atoi(number);
+  n = atol(number);
   stm = localtime(&n);
   if (!stm) die("date ‘%s’ not supported", datespec);
   *dest = *stm;
