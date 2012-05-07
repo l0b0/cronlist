@@ -496,7 +496,7 @@ void get_tm_from_date (char *datespec, struct tm *dest) {
 int mdays[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
 int leap (int year) {
-  return (year+1900)%400 == 0 || (year+1900)%100 != 0 || year%4 == 0;
+  return (year+1900)%400 == 0 || ((year+1900)%100 != 0 && year%4 == 0);
 }
 
 
