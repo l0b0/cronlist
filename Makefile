@@ -5,7 +5,7 @@ SCRIPT = $(notdir $(CURDIR))
 $(SCRIPT): $(SCRIPT).c
 	gcc -Wall -o $@ $<
 
-install:
+install: $(SCRIPT)
 	install $(SCRIPT) $(PREFIX)
 
 clean:
