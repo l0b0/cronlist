@@ -11,3 +11,5 @@ install: $(SCRIPT)
 
 clean:
 	-rm $(SCRIPT)
+
+include make-includes/variables.mk
