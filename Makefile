@@ -3,17 +3,17 @@ exec_prefix ?= $(prefix)
 bindir ?= $(exec_prefix)/bin
 sysconfdir ?= $(prefix)/etc
 
-SCRIPT = $(notdir $(CURDIR))
+script = $(notdir $(CURDIR))
 
-$(SCRIPT): $(SCRIPT).c
+$(script): $(script).c
 	gcc -Wall -o $@ $<
 
-install: $(SCRIPT)
+install: $(script)
 	install -d $(DESTDIR)$(bindir) $(DESTDIR)$(sysconfdir)/bash_completion.d
-	install $(SCRIPT) $(DESTDIR)$(bindir)
-	install --mode 644 etc/bash_completion.d/$(SCRIPT) $(DESTDIR)$(sysconfdir)/bash_completion.d
+	install $(script) $(DESTDIR)$(bindir)
+	install --mode 644 etc/bash_completion.d/$(script) $(DESTDIR)$(sysconfdir)/bash_completion.d
 
 clean:
-	-rm $(SCRIPT)
+	-rm $(script)
 
 include make-includes/variables.mk
