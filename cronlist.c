@@ -179,7 +179,7 @@ static char *mon_fullnames[] = {
 static char *mon_abbrevs[] = {
   "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
   "Sep", "Oct", "Nov", "Dec", NULL };
-static char **months[] = { mon_abbrevs, mon_fullnames, NULL };
+static char **months[] = { mon_fullnames, mon_abbrevs, NULL };
 
 
 int get_month (char *buf, char **end)
@@ -192,7 +192,7 @@ static char *dow_fullnames[] = {
   "Thursday", "Friday", "Saturday", NULL };
 static char *dow_abbrevs[] = {
   "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", NULL };
-static char **dows[] = { dow_abbrevs, dow_fullnames, NULL };
+static char **dows[] = { dow_fullnames, dow_abbrevs, NULL };
 
 
 int get_dow_1 (char *buf, char **end)
@@ -487,7 +487,7 @@ void get_tm_from_date (char *datespec, struct tm *dest) {
   fgets(number, 20, p);
   pclose(p);
   if (!isdigit(number[0])) die("command ‘%s’ didn't return a meaningful value", cmd);
-  n = atoi(number);
+  n = atol(number);
   stm = localtime(&n);
   if (!stm) die("date ‘%s’ not supported", datespec);
   *dest = *stm;
@@ -496,7 +496,7 @@ void get_tm_from_date (char *datespec, struct tm *dest) {
 int mdays[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
 int leap (int year) {
-  return (year+1900)%400 == 0 || (year+1900)%100 != 0 || year%4 == 0;
+  return (year+1900)%400 == 0 || ((year+1900)%100 != 0 && year%4 == 0);
 }
 
 
