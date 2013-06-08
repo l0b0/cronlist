@@ -6,5 +6,6 @@ cronlist
 Installation
 ------------
 
+    git submodule update --init
     make
     sudo make install
