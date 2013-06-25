@@ -205,7 +205,7 @@ int get_dow_2 (char *buf, char **end)
   int res = get_dow_1(buf, end);
   return res == 0 ? 7 : res;
 }
-  
+
 
 char *read_range (char *buf, int min, int max, int offs,
                   fn get_number_1, fn get_number_2,
@@ -447,7 +447,7 @@ int tm_ge (struct tm *tm1, struct tm *tm2)
            (tm1->tm_min > tm2->tm_min ||
             (tm1->tm_min == tm2->tm_min)))))))));
 }
-      
+
 void die (char *s, ...) {
   va_list ap;
 
@@ -552,7 +552,7 @@ int main (int argc, char *argv[])
   }
   if (only_system && only_crontab)
     die("Can't choose both --system and --crontab");
-  
+
   if (!have_from) {
     t = time(NULL);
     stm = localtime(&t);
@@ -564,7 +564,7 @@ int main (int argc, char *argv[])
   }
 
   if (n <= 0) return 0;
-  
+
   entries = read_crontabs(!only_system, !only_crontab);
   if (!entries) return 0;
 
@@ -589,13 +589,13 @@ int main (int argc, char *argv[])
     }
 
     if (have_to && tm_ge(&tm, &to)) return 0;
-    
+
     /* after one year, if nothing was output, nothing will be */
     if (outputted == 0 &&
         (tm.tm_year > from.tm_year+1 ||
          (tm.tm_year == from.tm_year+1 && tm.tm_mon > from.tm_mon)))
       return 0;
-        
+
     /* increment tm */
     tm.tm_min++;
     if (tm.tm_min > 59) {
