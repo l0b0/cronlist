@@ -3,20 +3,26 @@ exec_prefix ?= $(prefix)
 bindir ?= $(exec_prefix)/bin
 sysconfdir ?= $(prefix)/etc
 
-name = $(notdir $(CURDIR))
+CC = gcc
+CFLAGS = -Wall
 
-$(name): $(name).c
+name = $(notdir $(CURDIR))
+exe = $(name).out
+
 .PHONY: all
-	gcc -Wall -o $@ $<
+all: $(exe)
+
+%.out: %.c
+	$(CC) $(CFLAGS) -o $@ $<
 
 .PHONY: install
-install: $(name)
+install: $(exe)
 	install -d $(DESTDIR)$(bindir) $(DESTDIR)$(sysconfdir)/bash_completion.d
-	install $(name) $(DESTDIR)$(bindir)
+	install $(exe) $(DESTDIR)$(bindir)/$(name)
 	install --mode 644 etc/bash_completion.d/$(name) $(DESTDIR)$(sysconfdir)/bash_completion.d
 
 .PHONY: clean
 clean:
-	-rm $(name)
+	-rm $(exe)
 
 include make-includes/variables.mk
