@@ -252,16 +252,6 @@ int all_full (char *vec, int len)
   return 1;
 }
 
-void print_vec (char *vec, int len)
-{
-  int i;
-  for (i = 0; i < len; i++) {
-    if (vec[i]) printf(" %2d", i);
-    else printf(" --");
-  }
-  printf("\n");
-}
-
 char *read_time_entry (char *buf, struct time_entry *res)
 {
   char raw_dow[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -352,18 +342,6 @@ struct entry *add_entries (char *buf, char *username, struct entry *link)
   return list;
 }
 
-void free_entry_list (struct entry *list)
-{
-  struct entry *p;
-  while (list) {
-    p = list;
-    list = list->next;
-    free(p->username);
-    free(p->command);
-    free(p);
-  }
-}
-
 char *get_username (void)
 {
   uid_t uid = getuid();
@@ -373,30 +351,6 @@ char *get_username (void)
   res = malloc(20);
   sprintf(res, "%u", uid);
   return res;
-}
-
-void print_te_part (char *arr, int len, int offs)
-{
-  int first = 1, i;
-  for (i = 0; i < len; i++) {
-    if (arr[i]) {
-      if (!first) putchar(',');
-      printf("%d", i+offs);
-      first = 0;
-    }
-  }
-}
-
-void print_entry (struct entry *e)
-{
-  print_te_part(e->te.m, 60, 0);   putchar(' ');
-  print_te_part(e->te.h, 24, 0);   putchar(' ');
-  if (e->te.ignore == IGNORE_DOM)  putchar('-');
-  print_te_part(e->te.dom, 31, 1); putchar(' ');
-  print_te_part(e->te.mon, 12, 1); putchar(' ');
-  if (e->te.ignore == IGNORE_DOW)  putchar('-');
-  print_te_part(e->te.dow, 7, 0);  putchar(' ');
-  printf(" %s %s\n", e->username, e->command);
 }
 
 struct entry *read_crontabs (int user, int system)
