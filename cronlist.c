@@ -19,7 +19,6 @@
 #include <ctype.h>
 #include <string.h>
 #include <unistd.h>
-#include <sys/types.h>
 #include <pwd.h>
 #include <getopt.h>
 #include <stdarg.h>
