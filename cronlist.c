@@ -573,7 +573,4 @@ int main (int argc, char *argv[])
       }
     }
   }
-  /* never reached */
-
-  return 0;
 }
