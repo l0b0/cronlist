@@ -51,7 +51,7 @@ struct time_entry EMPTY_TIME_ENTRY;
 char *slurp (FILE *f)
 {
   const int increment = 8192;
-  int capa = increment;
+  size_t capa = increment;
   char *buf = malloc(capa);
   size_t res, offs = 0;
 
@@ -132,7 +132,7 @@ int eoln (char *p)
 
 typedef int (*fn)(char *, char **);
 
-char *read_number (char *buf, fn get_number, int *res)
+char *read_number (char *buf, fn get_number, long *res)
 {
   char *p = buf;
   if (isdigit(*p)) {
@@ -211,7 +211,7 @@ char *read_range (char *buf, int min, int max, int offs,
                   char *dest)
 {
   char *p = skip_blanks(buf);
-  int num1, num2, step, i;
+  long num1, num2, step, i;
 
   for (;;) {
     if (*p == '*') {
@@ -257,7 +257,7 @@ char *read_time_entry (char *buf, struct time_entry *res)
   char raw_dow[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
   char *p = skip_irrelevant(buf);
   char *keyword;
-  int len;
+  unsigned long len;
   int fulldom, fulldow;
 
   if (eoln(p)) return NULL;
@@ -466,7 +466,8 @@ int main (int argc, char *argv[])
   };
 
   int have_from = 0, have_to = 0, have_n = 0, only_system = 0, only_crontab = 0;
-  int n, outputted;
+  int outputted;
+  long n = 0;
   struct tm from, to, tm, *stm;
   time_t t;
   int opt;
