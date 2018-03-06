@@ -1,0 +1,6 @@
+[package]
+name = "cronlist"
+version = "0.1.0"
+authors = ["Victor Engmark <victorengmark@catalyst.net.nz>"]
+
+[dependencies]
