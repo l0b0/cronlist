@@ -1,3 +1,5 @@
+XML_EXTENSIONS = iml xml
+
 .PHONY: all
 all: build
 
@@ -17,4 +19,4 @@ lint:
 clean:
 	$(RM) -r Cargo.lock target/
 
-include make-includes/variables.mk
+include make-includes/variables.mk make-includes/xml.mk

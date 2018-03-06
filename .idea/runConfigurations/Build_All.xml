@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Build All" type="CMakeRunConfiguration" factoryName="Application" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="cronlist" RUN_TARGET_NAME="cronlist" EXPLICIT_BUILD_TARGET_NAME="all">
-    <envs />
-    <method />
+    <envs/>
+    <method/>
   </configuration>
 </component>
