@@ -33,6 +33,7 @@ impl DateTimeFieldParser {
 
     fn parse_range(&self, string_value: &str) -> Range<u8> {
         let values: Vec<u8> = string_value.splitn(2, "-").map(|part| part.parse().unwrap()).collect();
+        assert_eq!(values.len(), 2);
 
         // TODO: Use inclusive range when stable
         values[0]..values[1] + 1
