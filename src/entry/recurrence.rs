@@ -45,10 +45,4 @@ mod tests {
             }
         );
     }
-
-    #[test]
-    fn should_construct_an_hour_from_comma_separated_numbers() {
-        let hour = Recurrence::new(&vec!["0,59", "2", "3", "4", "5"]);
-        assert_eq!(hour.minutes, vec![0, 59]);
-    }
 }
