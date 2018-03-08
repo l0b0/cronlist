@@ -32,7 +32,7 @@ mod tests {
     use super::Recurrence;
 
     #[test]
-    fn should_construct_an_hour_from_a_single_number() {
+    fn should_construct_a_recurrence_from_parser_responses() {
         let recurrence = Recurrence::new(&vec!["1", "2", "3", "4", "5"]);
         assert_eq!(
             recurrence,
