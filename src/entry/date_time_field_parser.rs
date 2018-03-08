@@ -1,11 +1,15 @@
+use std::ops::Range;
+
 pub struct DateTimeFieldParser {
-    pub min: u8,
-    pub max: u8,
+    range: Range<u8>,
 }
 
 impl DateTimeFieldParser {
+    pub fn new(min: u8, max: u8) -> DateTimeFieldParser {
+        DateTimeFieldParser { range: (min..max + 1) }
+    }
     pub fn parse(&self, string_value: &str) -> Vec<u8> {
-        let mut values = Vec::with_capacity((self.max - self.min + 1) as usize);
+        let mut values = Vec::with_capacity((self.range.end - self.range.start) as usize);
 
         string_value
             .split(",")
@@ -36,9 +40,8 @@ impl DateTimeFieldParser {
     }
 
     fn verify_range(&self, value: u8) {
-        let range = { self.min..self.max + 1 };
-        assert!(range.start <= value);
-        assert!(range.end > value);
+        assert!(self.range.start <= value);
+        assert!(self.range.end > value);
     }
 }
 
@@ -48,69 +51,69 @@ mod tests {
 
     #[test]
     fn should_parse_complex_pattern() {
-        let parser = DateTimeFieldParser { min: 1, max: 12 };
+        let parser = DateTimeFieldParser::new(1, 12);
         assert_eq!(parser.parse("4-8,1,12,6"), vec![1, 4, 5, 6, 7, 8, 12]);
     }
 
     #[test]
     fn should_parse_comma_separated_numbers() {
-        let parser = DateTimeFieldParser { min: 0, max: 23 };
+        let parser = DateTimeFieldParser::new(0, 23);
         assert_eq!(parser.parse("0,23"), vec![0, 23]);
     }
 
     #[test]
     fn should_remove_duplicates() {
-        let parser = DateTimeFieldParser { min: 1, max: 2 };
+        let parser = DateTimeFieldParser::new(1, 2);
         assert_eq!(parser.parse("1,1,2,2,2"), vec![1, 2]);
     }
 
     #[test]
     fn should_sort_values() {
-        let parser = DateTimeFieldParser { min: 1, max: 2 };
+        let parser = DateTimeFieldParser::new(1, 2);
         assert_eq!(parser.parse("2,1"), vec![1, 2]);
     }
 
     #[test]
     fn should_parse_range() {
-        let parser = DateTimeFieldParser { min: 0, max: 23 };
+        let parser = DateTimeFieldParser::new(0, 23);
         assert_eq!(parser.parse_range("1-3"), vec![1, 2, 3]);
     }
 
     #[test]
     #[should_panic]
     fn should_fail_verification_below_min() {
-        let parser = DateTimeFieldParser { min: 1, max: 12 };
+        let parser = DateTimeFieldParser::new(1, 12);
         parser.verify_range(0)
     }
 
     #[test]
     fn should_verify_at_min() {
-        let parser = DateTimeFieldParser { min: 0, max: 23 };
+        let parser = DateTimeFieldParser::new(0, 23);
         parser.verify_range(0);
     }
 
     #[test]
     fn should_verify_between_min_and_max() {
-        let parser = DateTimeFieldParser { min: 0, max: 23 };
+        let parser = DateTimeFieldParser::new(0, 23);
         parser.verify_range(12);
     }
 
     #[test]
     fn should_verify_at_both_min_and_max() {
-        let parser = DateTimeFieldParser { min: 1, max: 1 };
+        let parser = DateTimeFieldParser::new(1, 1);
         parser.verify_range(1);
     }
 
     #[test]
     fn should_verify_at_max() {
-        let parser = DateTimeFieldParser { min: 0, max: 23 };
+        let parser = DateTimeFieldParser::new(0, 23);
         parser.verify_range(23);
     }
 
     #[test]
     #[should_panic]
     fn should_fail_verification_above_max() {
-        let parser = DateTimeFieldParser { min: 0, max: 23 };
+        let parser = DateTimeFieldParser::new(0, 23);
         parser.verify_range(24);
     }
 }

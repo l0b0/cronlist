@@ -1,11 +1,5 @@
 use super::date_time_field_parser::DateTimeFieldParser;
 
-const MINUTES_PARSER: DateTimeFieldParser = DateTimeFieldParser { min: 0, max: 59 };
-const HOURS_PARSER: DateTimeFieldParser = DateTimeFieldParser { min: 0, max: 23 };
-const DAYS_OF_MONTH_PARSER: DateTimeFieldParser = DateTimeFieldParser { min: 1, max: 31 };
-const MONTHS_PARSER: DateTimeFieldParser = DateTimeFieldParser { min: 1, max: 12 };
-const DAYS_OF_WEEK_PARSER: DateTimeFieldParser = DateTimeFieldParser { min: 0, max: 7 };
-
 #[derive(Debug, PartialEq)]
 pub struct Recurrence {
     minutes: Vec<u8>,
@@ -17,12 +11,18 @@ pub struct Recurrence {
 
 impl Recurrence {
     pub fn new(fields: &[&str]) -> Recurrence {
+        let minutes_parser: DateTimeFieldParser = DateTimeFieldParser::new(0, 59);
+        let hours_parser: DateTimeFieldParser = DateTimeFieldParser::new(0, 23);
+        let days_of_month_parser: DateTimeFieldParser = DateTimeFieldParser::new(1, 31);
+        let months_parser: DateTimeFieldParser = DateTimeFieldParser::new(1, 12);
+        let days_of_week_parser: DateTimeFieldParser = DateTimeFieldParser::new(0, 7);
+
         Recurrence {
-            minutes: MINUTES_PARSER.parse(fields[0]),
-            hours: HOURS_PARSER.parse(fields[1]),
-            days_of_month: DAYS_OF_MONTH_PARSER.parse(fields[2]),
-            months: MONTHS_PARSER.parse(fields[3]),
-            days_of_week: DAYS_OF_WEEK_PARSER.parse(fields[4]),
+            minutes: minutes_parser.parse(fields[0]),
+            hours: hours_parser.parse(fields[1]),
+            days_of_month: days_of_month_parser.parse(fields[2]),
+            months: months_parser.parse(fields[3]),
+            days_of_week: days_of_week_parser.parse(fields[4]),
         }
     }
 }
