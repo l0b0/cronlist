@@ -36,7 +36,9 @@ impl DateTimeFieldParser {
     }
 
     fn verify_range(&self, value: u8) {
-        assert!({ self.min..self.max + 1 }.contains(value));
+        let range = { self.min..self.max + 1 };
+        assert!(range.start <= value);
+        assert!(range.end > value);
     }
 }
 
