@@ -34,7 +34,7 @@ impl DateTimeFieldParser {
     fn parse_range(&self, string_value: &str) -> Vec<u8> {
         let values: Vec<u8> = string_value
             .splitn(2, "-")
-            .map(|part| part.parse().ok().unwrap())
+            .map(|part| part.parse().unwrap())
             .collect();
 
         { values[0]..(values[1] + 1) }.collect()
