@@ -25,19 +25,17 @@ impl DateTimeFieldParser {
     fn parse_part(&self, string_value: &str) -> Vec<u8> {
         let values = match string_value.parse::<u8>() {
             Ok(value) => vec![value],
-            Err(_) => self.parse_range(string_value),
+            Err(_) => self.parse_range(string_value).collect(),
         };
         values.iter().for_each(|value| self.verify_range(*value));
         values
     }
 
-    fn parse_range(&self, string_value: &str) -> Vec<u8> {
-        let values: Vec<u8> = string_value
-            .splitn(2, "-")
-            .map(|part| part.parse().unwrap())
-            .collect();
+    fn parse_range(&self, string_value: &str) -> Range<u8> {
+        let values: Vec<u8> = string_value.splitn(2, "-").map(|part| part.parse().unwrap()).collect();
 
-        { values[0]..(values[1] + 1) }.collect()
+        // TODO: Use inclusive range when stable
+        values[0]..values[1] + 1
     }
 
     fn verify_range(&self, value: u8) {
@@ -77,7 +75,7 @@ mod tests {
     #[test]
     fn should_parse_range() {
         let parser = DateTimeFieldParser::new(0, 23);
-        assert_eq!(parser.parse_range("1-3"), vec![1, 2, 3]);
+        assert_eq!(parser.parse_range("1-3"), { 1..4 });
     }
 
     #[test]
