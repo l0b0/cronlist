@@ -8,6 +8,7 @@ impl DateTimeFieldParser {
     pub fn new(min: u8, max: u8) -> DateTimeFieldParser {
         DateTimeFieldParser { range: (min..max + 1) }
     }
+
     pub fn parse(&self, string_value: &str) -> Vec<u8> {
         let mut values = Vec::with_capacity((self.range.end - self.range.start) as usize);
 
