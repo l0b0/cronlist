@@ -18,11 +18,11 @@ impl Recurrence {
         let days_of_week_parser: DateTimeFieldParser = DateTimeFieldParser::new(0, 7);
 
         Recurrence {
-            minutes: minutes_parser.parse(fields[0]),
-            hours: hours_parser.parse(fields[1]),
-            days_of_month: days_of_month_parser.parse(fields[2]),
-            months: months_parser.parse(fields[3]),
-            days_of_week: days_of_week_parser.parse(fields[4]),
+            minutes: minutes_parser.parse_field(fields[0]),
+            hours: hours_parser.parse_field(fields[1]),
+            days_of_month: days_of_month_parser.parse_field(fields[2]),
+            months: months_parser.parse_field(fields[3]),
+            days_of_week: days_of_week_parser.parse_field(fields[4]),
         }
     }
 }

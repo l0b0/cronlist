@@ -9,12 +9,12 @@ impl DateTimeFieldParser {
         DateTimeFieldParser { range: (min..max + 1) }
     }
 
-    pub fn parse(&self, string_value: &str) -> Vec<u8> {
+    pub fn parse_field(&self, string_value: &str) -> Vec<u8> {
         let mut values = Vec::with_capacity((self.range.end - self.range.start) as usize);
 
         string_value
             .split(",")
-            .for_each(|part| values.append(&mut self.parse_part(part)));
+            .for_each(|part| values.append(&mut self.parse_list_entry(part)));
 
         values.sort_unstable();
         values.dedup();
@@ -22,7 +22,7 @@ impl DateTimeFieldParser {
         values
     }
 
-    fn parse_part(&self, string_value: &str) -> Vec<u8> {
+    fn parse_list_entry(&self, string_value: &str) -> Vec<u8> {
         let values = match string_value.parse::<u8>() {
             Ok(value) => vec![value],
             Err(_) => self.parse_range(string_value).collect(),
@@ -52,25 +52,25 @@ mod tests {
     #[test]
     fn should_parse_complex_pattern() {
         let parser = DateTimeFieldParser::new(1, 12);
-        assert_eq!(parser.parse("4-8,1,12,6"), vec![1, 4, 5, 6, 7, 8, 12]);
+        assert_eq!(parser.parse_field("4-8,1,12,6"), vec![1, 4, 5, 6, 7, 8, 12]);
     }
 
     #[test]
     fn should_parse_comma_separated_numbers() {
         let parser = DateTimeFieldParser::new(0, 23);
-        assert_eq!(parser.parse("0,23"), vec![0, 23]);
+        assert_eq!(parser.parse_field("0,23"), vec![0, 23]);
     }
 
     #[test]
     fn should_remove_duplicates() {
         let parser = DateTimeFieldParser::new(1, 2);
-        assert_eq!(parser.parse("1,1,2,2,2"), vec![1, 2]);
+        assert_eq!(parser.parse_field("1,1,2,2,2"), vec![1, 2]);
     }
 
     #[test]
     fn should_sort_values() {
         let parser = DateTimeFieldParser::new(1, 2);
-        assert_eq!(parser.parse("2,1"), vec![1, 2]);
+        assert_eq!(parser.parse_field("2,1"), vec![1, 2]);
     }
 
     #[test]
