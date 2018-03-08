@@ -73,9 +73,7 @@ mod tests {
     #[test]
     fn should_parse_range() {
         let parser = DateTimeFieldParser { min: 0, max: 23 };
-        let vec = parser.parse_range("1-3");
-        println!("{:?}", vec);
-        assert_eq!(vec, vec![1, 2, 3]);
+        assert_eq!(parser.parse_range("1-3"), vec![1, 2, 3]);
     }
 
     #[test]
