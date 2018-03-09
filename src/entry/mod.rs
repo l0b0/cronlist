@@ -1,7 +1,7 @@
 mod date_time_field_parser;
 mod recurrence;
+mod stepped_range;
 
-use self::date_time_field_parser::DateTimeFieldParser;
 use self::recurrence::Recurrence;
 
 #[derive(Debug, PartialEq)]
