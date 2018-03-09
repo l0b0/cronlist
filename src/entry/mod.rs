@@ -4,7 +4,6 @@ mod stepped_range;
 
 use self::recurrence::Recurrence;
 
-#[derive(Debug, PartialEq)]
 struct Entry<'a> {
     recurrence: Recurrence,
     command: &'a str,
