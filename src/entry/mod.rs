@@ -22,6 +22,7 @@ impl<'a> Entry<'a> {
     fn fields(entry: &'a str) -> Vec<&'a str> {
         let mut last_whitespace = false;
         entry
+            .trim_left()
             .splitn(6, |character: char| {
                 if character.is_whitespace() {
                     if last_whitespace {
@@ -51,7 +52,7 @@ mod tests {
 
     #[test]
     fn should_split_into_six_fields() {
-        let actual = Entry::fields("1  2   3 4 5 command  with   spaces");
+        let actual = Entry::fields("  1  2   3 4 5 command  with   spaces");
         assert_eq!(actual, vec!["1", "2", "3", "4", "5", "command  with   spaces"]);
     }
 }
