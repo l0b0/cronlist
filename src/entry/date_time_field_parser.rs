@@ -38,7 +38,7 @@ impl DateTimeFieldParser {
         SteppedRange {
             start: values.start,
             end: values.end,
-            step: step,
+            step,
         }.collect()
     }
 
