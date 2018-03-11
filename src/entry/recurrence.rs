@@ -70,7 +70,7 @@ mod tests {
 
     #[test]
     fn should_get_next_occurrence() {
-        let mut recurrence = Recurrence {
+        let recurrence = Recurrence {
             minutes: vec![0],
             hours: vec![0],
             days_of_month: vec![1],
@@ -84,7 +84,7 @@ mod tests {
 
     #[test]
     fn should_match_occurrences() {
-        let mut recurrence = Recurrence {
+        let recurrence = Recurrence {
             minutes: vec![0],
             hours: vec![0],
             days_of_month: vec![1],
@@ -97,7 +97,7 @@ mod tests {
 
     #[test]
     fn should_not_match_other_date() {
-        let mut recurrence = Recurrence {
+        let recurrence = Recurrence {
             minutes: vec![0],
             hours: vec![0],
             days_of_month: vec![1],
