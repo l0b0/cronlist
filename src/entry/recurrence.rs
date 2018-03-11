@@ -1,6 +1,6 @@
-use chrono::{Datelike, NaiveDateTime, Timelike};
-
 use super::date_time_field_parser::DateTimeFieldParser;
+use chrono::prelude::*;
+use time::Duration;
 
 #[derive(Debug, PartialEq)]
 pub struct Recurrence {
@@ -26,6 +26,14 @@ impl Recurrence {
             months: months_parser.parse_field(fields[3]),
             days_of_week: days_of_week_parser.parse_field(fields[4]),
         }
+    }
+
+    fn next(&self, after: NaiveDateTime) -> NaiveDateTime {
+        let mut current = after + Duration::minutes(1); // Avoid matching `after`
+        while !self.matches(current) {
+            current += Duration::minutes(1);
+        }
+        current
     }
 
     fn matches(&self, instant: NaiveDateTime) -> bool {
@@ -58,6 +66,20 @@ mod tests {
                 days_of_week: vec![5],
             }
         );
+    }
+
+    #[test]
+    fn should_get_next_occurrence() {
+        let mut recurrence = Recurrence {
+            minutes: vec![0],
+            hours: vec![0],
+            days_of_month: vec![1],
+            months: vec![1],
+            days_of_week: vec![0],
+        };
+        let matching_datetime = NaiveDate::from_ymd(2001, 1, 1).and_hms(0, 0, 0);
+        let now = NaiveDate::from_ymd(2000, 1, 1).and_hms(0, 0, 0);
+        assert_eq!(recurrence.next(now), matching_datetime);
     }
 
     #[test]
