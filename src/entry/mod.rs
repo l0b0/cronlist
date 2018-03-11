@@ -52,7 +52,7 @@ mod tests {
 
     #[test]
     fn should_split_into_six_fields() {
-        let actual = Entry::fields("  1  2   3 4 5 command  with   spaces");
+        let actual = Entry::fields("  1  2   3 4 5   command  with   spaces");
         assert_eq!(actual, vec!["1", "2", "3", "4", "5", "command  with   spaces"]);
     }
 }
