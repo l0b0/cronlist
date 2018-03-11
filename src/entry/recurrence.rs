@@ -53,6 +53,8 @@ mod tests {
 
     use super::Recurrence;
 
+    const ANY_SECOND: u32 = 59;
+
     #[test]
     fn should_construct_a_recurrence_from_parser_responses() {
         let recurrence = Recurrence::new(&vec!["1", "2", "3", "4", "5"]);
@@ -77,8 +79,8 @@ mod tests {
             months: vec![1],
             days_of_week: vec![0],
         };
-        let matching_datetime = NaiveDate::from_ymd(2001, 1, 1).and_hms(0, 0, 0);
-        let now = NaiveDate::from_ymd(2000, 1, 1).and_hms(0, 0, 0);
+        let matching_datetime = NaiveDate::from_ymd(2001, 1, 1).and_hms(0, 0, ANY_SECOND);
+        let now = NaiveDate::from_ymd(2000, 1, 1).and_hms(0, 0, ANY_SECOND);
         assert_eq!(recurrence.next_match(now), matching_datetime);
     }
 
@@ -91,7 +93,7 @@ mod tests {
             months: vec![1],
             days_of_week: vec![0],
         };
-        let matching_datetime = NaiveDate::from_ymd(2001, 1, 1).and_hms(0, 0, 0);
+        let matching_datetime = NaiveDate::from_ymd(2001, 1, 1).and_hms(0, 0, ANY_SECOND);
         assert!(recurrence.matches(matching_datetime));
     }
 
@@ -104,7 +106,7 @@ mod tests {
             months: vec![1],
             days_of_week: vec![0],
         };
-        let mismatch = NaiveDate::from_ymd(2000, 1, 1).and_hms(0, 0, 0);
+        let mismatch = NaiveDate::from_ymd(2000, 1, 1).and_hms(0, 0, ANY_SECOND);
         assert!(!recurrence.matches(mismatch));
     }
 }
