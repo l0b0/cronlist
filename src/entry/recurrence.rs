@@ -1,3 +1,5 @@
+use chrono::{Datelike, NaiveDateTime, Timelike};
+
 use super::date_time_field_parser::DateTimeFieldParser;
 
 #[derive(Debug, PartialEq)]
@@ -25,10 +27,22 @@ impl Recurrence {
             days_of_week: days_of_week_parser.parse_field(fields[4]),
         }
     }
+
+    fn matches(&self, instant: NaiveDateTime) -> bool {
+        let minute = &(instant.minute() as u8);
+        let hour = &(instant.hour() as u8);
+        let day_of_month = &(instant.day() as u8);
+        let month = &(instant.month() as u8);
+        let day_of_week = &(instant.weekday() as u8);
+        self.minutes.contains(minute) && self.hours.contains(hour) && self.days_of_month.contains(day_of_month)
+            && self.months.contains(month) && self.days_of_week.contains(day_of_week)
+    }
 }
 
 #[cfg(test)]
 mod tests {
+    use chrono::NaiveDate;
+
     use super::Recurrence;
 
     #[test]
@@ -44,5 +58,31 @@ mod tests {
                 days_of_week: vec![5],
             }
         );
+    }
+
+    #[test]
+    fn should_match_occurrences() {
+        let mut recurrence = Recurrence {
+            minutes: vec![0],
+            hours: vec![0],
+            days_of_month: vec![1],
+            months: vec![1],
+            days_of_week: vec![0],
+        };
+        let matching_datetime = NaiveDate::from_ymd(2001, 1, 1).and_hms(0, 0, 0);
+        assert!(recurrence.matches(matching_datetime));
+    }
+
+    #[test]
+    fn should_not_match_other_date() {
+        let mut recurrence = Recurrence {
+            minutes: vec![0],
+            hours: vec![0],
+            days_of_month: vec![1],
+            months: vec![1],
+            days_of_week: vec![0],
+        };
+        let mismatch = NaiveDate::from_ymd(2000, 1, 1).and_hms(0, 0, 0);
+        assert!(!recurrence.matches(mismatch));
     }
 }
