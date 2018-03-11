@@ -79,9 +79,11 @@ mod tests {
             months: vec![1],
             days_of_week: vec![0],
         };
-        let matching_datetime = NaiveDate::from_ymd(2001, 1, 1).and_hms(0, 0, ANY_SECOND);
         let now = NaiveDate::from_ymd(2000, 1, 1).and_hms(0, 0, ANY_SECOND);
-        assert_eq!(recurrence.next_match(now), matching_datetime);
+        assert_eq!(
+            recurrence.next_match(now),
+            NaiveDate::from_ymd(2001, 1, 1).and_hms(0, 0, ANY_SECOND)
+        );
     }
 
     #[test]
@@ -93,8 +95,7 @@ mod tests {
             months: vec![1],
             days_of_week: vec![0],
         };
-        let matching_datetime = NaiveDate::from_ymd(2001, 1, 1).and_hms(0, 0, ANY_SECOND);
-        assert!(recurrence.matches(matching_datetime));
+        assert!(recurrence.matches(NaiveDate::from_ymd(2001, 1, 1).and_hms(0, 0, ANY_SECOND)));
     }
 
     #[test]
@@ -106,7 +107,6 @@ mod tests {
             months: vec![1],
             days_of_week: vec![0],
         };
-        let mismatch = NaiveDate::from_ymd(2000, 1, 1).and_hms(0, 0, ANY_SECOND);
-        assert!(!recurrence.matches(mismatch));
+        assert!(!recurrence.matches(NaiveDate::from_ymd(2000, 1, 1).and_hms(0, 0, ANY_SECOND)));
     }
 }
