@@ -28,7 +28,7 @@ impl Recurrence {
         }
     }
 
-    fn next(&self, after: NaiveDateTime) -> NaiveDateTime {
+    fn next_match(&self, after: NaiveDateTime) -> NaiveDateTime {
         let mut current = after + Duration::minutes(1); // Avoid matching `after`
         while !self.matches(current) {
             current += Duration::minutes(1);
@@ -79,7 +79,7 @@ mod tests {
         };
         let matching_datetime = NaiveDate::from_ymd(2001, 1, 1).and_hms(0, 0, 0);
         let now = NaiveDate::from_ymd(2000, 1, 1).and_hms(0, 0, 0);
-        assert_eq!(recurrence.next(now), matching_datetime);
+        assert_eq!(recurrence.next_match(now), matching_datetime);
     }
 
     #[test]
