@@ -29,9 +29,13 @@ impl Recurrence {
     }
 
     fn next_match(&self, after: NaiveDateTime) -> NaiveDateTime {
-        let mut current = after + Duration::minutes(1); // Avoid matching `after`
+        let next_minute = NextPeriod::new(&(after.minute() as u8 + 1), &self.minutes);
+        let next_hour = NextPeriod::new(&(after.hour() as u8 + next_minute.overflow as u8), &self.hours);
+        let next_time_of_day = NaiveTime::from_hms(next_hour.period as u32, next_minute.period as u32, 0);
+        let mut current = after.date().and_time(next_time_of_day) + Duration::days(next_hour.overflow as i64);
+
         while !self.matches(current) {
-            current += Duration::minutes(1);
+            current += Duration::days(1);
         }
         current
     }
@@ -47,11 +51,33 @@ impl Recurrence {
     }
 }
 
+struct NextPeriod {
+    period: u8,
+    overflow: u8,
+}
+
+impl NextPeriod {
+    fn new(after: &u8, possibilities: &Vec<u8>) -> NextPeriod {
+        for period in possibilities {
+            if period > after {
+                return NextPeriod {
+                    period: period.clone(),
+                    overflow: 0,
+                };
+            }
+        }
+        return NextPeriod {
+            period: possibilities[0].clone(),
+            overflow: 1,
+        };
+    }
+}
+
 #[cfg(test)]
 mod tests {
-    use chrono::NaiveDate;
+    use chrono::prelude::*;
 
-    use super::Recurrence;
+    use super::{NextPeriod, Recurrence};
 
     const ANY_SECOND: u32 = 59;
 
@@ -82,8 +108,22 @@ mod tests {
         let now = NaiveDate::from_ymd(2000, 1, 1).and_hms(0, 0, ANY_SECOND);
         assert_eq!(
             recurrence.next_match(now),
-            NaiveDate::from_ymd(2001, 1, 1).and_hms(0, 0, ANY_SECOND)
+            NaiveDate::from_ymd(2001, 1, 1).and_hms(0, 0, 0)
         );
+    }
+
+    #[test]
+    fn should_get_next_period_without_overflow() {
+        let next = NextPeriod::new(&20, &vec![0, 30]);
+        assert_eq!(next.period, 30);
+        assert_eq!(next.overflow, 0);
+    }
+
+    #[test]
+    fn should_get_next_period_with_overflow() {
+        let next = NextPeriod::new(&45, &vec![15, 45]);
+        assert_eq!(next.period, 15);
+        assert_eq!(next.overflow, 1);
     }
 
     #[test]
