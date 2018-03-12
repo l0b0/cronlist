@@ -12,6 +12,7 @@ impl<'a> Crontab<'a> {
             entries: input
                 .lines()
                 .map(|line| line.trim_left())
+                .filter(|line| !line.starts_with('#'))
                 .filter(|line| !line.is_empty())
                 .map(|line| Entry::new(line))
                 .collect(),
@@ -43,6 +44,14 @@ mod tests {
     #[test]
     fn should_ignore_empty_lines() {
         let crontab = ["", " \t \t", "1 2 3 4 5 command", " ", ""].join("\n");
+        let actual = Crontab::new(&crontab);
+        assert_eq!(actual.entries.len(), 1);
+        assert_eq!(actual.entries[0].command, "command");
+    }
+
+    #[test]
+    fn should_ignore_comment_lines() {
+        let crontab = ["# Comment", "1 2 3 4 5 command", " \t \t# Comment"].join("\n");
         let actual = Crontab::new(&crontab);
         assert_eq!(actual.entries.len(), 1);
         assert_eq!(actual.entries[0].command, "command");
