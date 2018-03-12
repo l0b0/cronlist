@@ -33,11 +33,8 @@ mod tests {
 
     #[test]
     fn should_create_multiple_entries() {
-        let actual = Crontab::new(
-            "1 2 3 4 5 first
-2 3 4 5 6 second
-",
-        );
+        let crontab = ["1 2 3 4 5 first", "2 3 4 5 6 second"].join("\n");
+        let actual = Crontab::new(&crontab);
         assert_eq!(actual.entries.len(), 2);
         assert_eq!(actual.entries[0].command, "first");
         assert_eq!(actual.entries[1].command, "second");
