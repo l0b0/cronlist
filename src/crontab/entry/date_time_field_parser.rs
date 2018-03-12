@@ -26,8 +26,12 @@ impl DateTimeFieldParser {
 
     fn parse_list_entry(&self, string_value: &str) -> Vec<u8> {
         let mut parts = string_value.splitn(2, '/');
+        let values = parts
+            .next()
+            .unwrap()
+            .replace("*", &format!("{}-{}", self.range.start, self.range.end - 1));
 
-        let values: Range<u8> = self.parse_range(parts.next().unwrap());
+        let values: Range<u8> = self.parse_range(&values);
 
         let step = match parts.next() {
             Some(string_value) => string_value.parse::<u8>().unwrap(),
@@ -67,7 +71,7 @@ mod tests {
     #[test]
     fn should_parse_complex_pattern() {
         let parser = DateTimeFieldParser::new(1, 12);
-        assert_eq!(parser.parse_field("5-9/2,1,12,6"), vec![1, 5, 6, 7, 9, 12]);
+        assert_eq!(parser.parse_field("5-9/2,1,*/5"), vec![1, 5, 6, 7, 9, 11]);
     }
 
     #[test]
@@ -80,6 +84,12 @@ mod tests {
     fn should_parse_range_with_step() {
         let parser = DateTimeFieldParser::new(0, 23);
         assert_eq!(parser.parse_list_entry("1-7/2"), vec![1, 3, 5, 7]);
+    }
+
+    #[test]
+    fn should_parse_asterisk() {
+        let parser = DateTimeFieldParser::new(1, 12);
+        assert_eq!(parser.parse_list_entry("*/4"), vec![1, 5, 9]);
     }
 
     #[test]
