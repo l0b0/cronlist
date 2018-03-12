@@ -4,13 +4,13 @@ mod stepped_range;
 
 use self::recurrence::Recurrence;
 
-struct Entry<'a> {
+pub struct Entry<'a> {
     recurrence: Recurrence,
-    command: &'a str,
+    pub command: &'a str,
 }
 
 impl<'a> Entry<'a> {
-    fn new(entry: &str) -> Entry {
+    pub fn new(entry: &str) -> Entry {
         let fields = Entry::fields(entry);
 
         Entry {

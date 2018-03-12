@@ -1,6 +1,6 @@
 use std::ops::Range;
 
-use entry::stepped_range::SteppedRange;
+use crontab::entry::stepped_range::SteppedRange;
 
 pub struct DateTimeFieldParser {
     range: Range<u8>,
