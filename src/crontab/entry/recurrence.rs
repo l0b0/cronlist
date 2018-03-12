@@ -17,7 +17,7 @@ impl Recurrence {
         let hours_parser: DateTimeFieldParser = DateTimeFieldParser::new(0, 23);
         let days_of_month_parser: DateTimeFieldParser = DateTimeFieldParser::new(1, 31);
         let months_parser: DateTimeFieldParser = DateTimeFieldParser::new(1, 12);
-        let days_of_week_parser: DateTimeFieldParser = DateTimeFieldParser::new(0, 7);
+        let days_of_week_parser: DateTimeFieldParser = DateTimeFieldParser::new_with_wrap_around(0, 6);
 
         Recurrence {
             minutes: minutes_parser.parse_field(fields[0]),

@@ -4,11 +4,22 @@ use crontab::entry::stepped_range::SteppedRange;
 
 pub struct DateTimeFieldParser {
     range: Range<u8>,
+    wrap_around_at_end: bool,
 }
 
 impl DateTimeFieldParser {
     pub fn new(min: u8, max: u8) -> DateTimeFieldParser {
-        DateTimeFieldParser { range: (min..max + 1) }
+        DateTimeFieldParser {
+            range: min..max + 1,
+            wrap_around_at_end: false,
+        }
+    }
+
+    pub fn new_with_wrap_around(min: u8, max: u8) -> DateTimeFieldParser {
+        DateTimeFieldParser {
+            range: min..max + 1,
+            wrap_around_at_end: true,
+        }
     }
 
     pub fn parse_field(&self, string_value: &str) -> Vec<u8> {
@@ -62,11 +73,19 @@ impl DateTimeFieldParser {
         };
 
         // TODO: Use step_by when stable
-        SteppedRange {
+        let mut values: Vec<u8> = SteppedRange {
             start: values.start,
             end: values.end,
             step,
-        }.collect()
+        }.collect();
+
+        let last_value = values.pop().unwrap();
+        if last_value == self.range.end && self.wrap_around_at_end {
+            values.push(0);
+        } else {
+            values.push(last_value);
+        }
+        values
     }
 
     fn parse_range(&self, values: &str) -> Range<u8> {
@@ -195,49 +214,49 @@ mod tests {
 
     #[test]
     fn should_parse_sunday_name() {
-        let parser = DateTimeFieldParser::new(0, 6);
+        let parser = DateTimeFieldParser::new_with_wrap_around(0, 6);
         assert_eq!(parser.parse_list_entry("Sun"), vec![0]);
     }
 
     #[test]
     fn should_parse_monday_name() {
-        let parser = DateTimeFieldParser::new(0, 6);
+        let parser = DateTimeFieldParser::new_with_wrap_around(0, 6);
         assert_eq!(parser.parse_list_entry("Mon"), vec![1]);
     }
 
     #[test]
     fn should_parse_tuesday_name() {
-        let parser = DateTimeFieldParser::new(0, 6);
+        let parser = DateTimeFieldParser::new_with_wrap_around(0, 6);
         assert_eq!(parser.parse_list_entry("Tue"), vec![2]);
     }
 
     #[test]
     fn should_parse_wednesday_name() {
-        let parser = DateTimeFieldParser::new(0, 6);
+        let parser = DateTimeFieldParser::new_with_wrap_around(0, 6);
         assert_eq!(parser.parse_list_entry("Wed"), vec![3]);
     }
 
     #[test]
     fn should_parse_thursday_name() {
-        let parser = DateTimeFieldParser::new(0, 6);
+        let parser = DateTimeFieldParser::new_with_wrap_around(0, 6);
         assert_eq!(parser.parse_list_entry("Thu"), vec![4]);
     }
 
     #[test]
     fn should_parse_friday_name() {
-        let parser = DateTimeFieldParser::new(0, 6);
+        let parser = DateTimeFieldParser::new_with_wrap_around(0, 6);
         assert_eq!(parser.parse_list_entry("Fri"), vec![5]);
     }
 
     #[test]
     fn should_parse_saturday_name() {
-        let parser = DateTimeFieldParser::new(0, 6);
+        let parser = DateTimeFieldParser::new_with_wrap_around(0, 6);
         assert_eq!(parser.parse_list_entry("Sat"), vec![6]);
     }
 
     #[test]
     fn should_parse_week_day_name_case_insensitively() {
-        let parser = DateTimeFieldParser::new(0, 6);
+        let parser = DateTimeFieldParser::new_with_wrap_around(0, 6);
         assert_eq!(parser.parse_list_entry("sAT"), vec![6]);
     }
 
@@ -251,6 +270,24 @@ mod tests {
     fn should_sort_values() {
         let parser = DateTimeFieldParser::new(1, 2);
         assert_eq!(parser.parse_field("2,1"), vec![1, 2]);
+    }
+
+    #[test]
+    fn should_parse_wraparound_sunday() {
+        let parser = DateTimeFieldParser::new_with_wrap_around(0, 6);
+        assert_eq!(parser.parse_field("7"), vec![0]);
+    }
+
+    #[test]
+    fn should_parse_week_range_with_sunday_at_end() {
+        let parser = DateTimeFieldParser::new_with_wrap_around(0, 6);
+        assert_eq!(parser.parse_field("4-7"), vec![0, 4, 5, 6]);
+    }
+
+    #[test]
+    fn should_parse_week_range_with_sunday_at_both_sides() {
+        let parser = DateTimeFieldParser::new_with_wrap_around(0, 6);
+        assert_eq!(parser.parse_field("0-7"), vec![0, 1, 2, 3, 4, 5, 6]);
     }
 
     #[test]
