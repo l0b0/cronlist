@@ -31,6 +31,29 @@ impl DateTimeFieldParser {
             .unwrap()
             .replace("*", &format!("{}-{}", self.range.start, self.range.end - 1));
 
+        let values = match values.to_lowercase().as_ref() {
+            "jan" => "1",
+            "feb" => "2",
+            "mar" => "3",
+            "apr" => "4",
+            "may" => "5",
+            "jun" => "6",
+            "jul" => "7",
+            "aug" => "8",
+            "sep" => "9",
+            "oct" => "10",
+            "nov" => "11",
+            "dec" => "12",
+            "sun" => "0",
+            "mon" => "1",
+            "tue" => "2",
+            "wed" => "3",
+            "thu" => "4",
+            "fri" => "5",
+            "sat" => "6",
+            _ => &values,
+        };
+
         let values: Range<u8> = self.parse_range(&values);
 
         let step = match parts.next() {
@@ -90,6 +113,132 @@ mod tests {
     fn should_parse_asterisk() {
         let parser = DateTimeFieldParser::new(1, 12);
         assert_eq!(parser.parse_list_entry("*/4"), vec![1, 5, 9]);
+    }
+
+    #[test]
+    fn should_parse_january_name() {
+        let parser = DateTimeFieldParser::new(1, 12);
+        assert_eq!(parser.parse_list_entry("Jan"), vec![1]);
+    }
+
+    #[test]
+    fn should_parse_february_name() {
+        let parser = DateTimeFieldParser::new(1, 12);
+        assert_eq!(parser.parse_list_entry("Feb"), vec![2]);
+    }
+
+    #[test]
+    fn should_parse_march_name() {
+        let parser = DateTimeFieldParser::new(1, 12);
+        assert_eq!(parser.parse_list_entry("Mar"), vec![3]);
+    }
+
+    #[test]
+    fn should_parse_april_name() {
+        let parser = DateTimeFieldParser::new(1, 12);
+        assert_eq!(parser.parse_list_entry("Apr"), vec![4]);
+    }
+
+    #[test]
+    fn should_parse_may_name() {
+        let parser = DateTimeFieldParser::new(1, 12);
+        assert_eq!(parser.parse_list_entry("May"), vec![5]);
+    }
+
+    #[test]
+    fn should_parse_june_name() {
+        let parser = DateTimeFieldParser::new(1, 12);
+        assert_eq!(parser.parse_list_entry("Jun"), vec![6]);
+    }
+
+    #[test]
+    fn should_parse_july_name() {
+        let parser = DateTimeFieldParser::new(1, 12);
+        assert_eq!(parser.parse_list_entry("Jul"), vec![7]);
+    }
+
+    #[test]
+    fn should_parse_august_name() {
+        let parser = DateTimeFieldParser::new(1, 12);
+        assert_eq!(parser.parse_list_entry("Aug"), vec![8]);
+    }
+
+    #[test]
+    fn should_parse_september_name() {
+        let parser = DateTimeFieldParser::new(1, 12);
+        assert_eq!(parser.parse_list_entry("Sep"), vec![9]);
+    }
+
+    #[test]
+    fn should_parse_october_name() {
+        let parser = DateTimeFieldParser::new(1, 12);
+        assert_eq!(parser.parse_list_entry("Oct"), vec![10]);
+    }
+
+    #[test]
+    fn should_parse_november_name() {
+        let parser = DateTimeFieldParser::new(1, 12);
+        assert_eq!(parser.parse_list_entry("Nov"), vec![11]);
+    }
+
+    #[test]
+    fn should_parse_december_name() {
+        let parser = DateTimeFieldParser::new(1, 12);
+        assert_eq!(parser.parse_list_entry("Dec"), vec![12]);
+    }
+
+    #[test]
+    fn should_parse_month_name_case_insensitively() {
+        let parser = DateTimeFieldParser::new(1, 12);
+        assert_eq!(parser.parse_list_entry("dEC"), vec![12]);
+    }
+
+    #[test]
+    fn should_parse_sunday_name() {
+        let parser = DateTimeFieldParser::new(0, 6);
+        assert_eq!(parser.parse_list_entry("Sun"), vec![0]);
+    }
+
+    #[test]
+    fn should_parse_monday_name() {
+        let parser = DateTimeFieldParser::new(0, 6);
+        assert_eq!(parser.parse_list_entry("Mon"), vec![1]);
+    }
+
+    #[test]
+    fn should_parse_tuesday_name() {
+        let parser = DateTimeFieldParser::new(0, 6);
+        assert_eq!(parser.parse_list_entry("Tue"), vec![2]);
+    }
+
+    #[test]
+    fn should_parse_wednesday_name() {
+        let parser = DateTimeFieldParser::new(0, 6);
+        assert_eq!(parser.parse_list_entry("Wed"), vec![3]);
+    }
+
+    #[test]
+    fn should_parse_thursday_name() {
+        let parser = DateTimeFieldParser::new(0, 6);
+        assert_eq!(parser.parse_list_entry("Thu"), vec![4]);
+    }
+
+    #[test]
+    fn should_parse_friday_name() {
+        let parser = DateTimeFieldParser::new(0, 6);
+        assert_eq!(parser.parse_list_entry("Fri"), vec![5]);
+    }
+
+    #[test]
+    fn should_parse_saturday_name() {
+        let parser = DateTimeFieldParser::new(0, 6);
+        assert_eq!(parser.parse_list_entry("Sat"), vec![6]);
+    }
+
+    #[test]
+    fn should_parse_week_day_name_case_insensitively() {
+        let parser = DateTimeFieldParser::new(0, 6);
+        assert_eq!(parser.parse_list_entry("sAT"), vec![6]);
     }
 
     #[test]
