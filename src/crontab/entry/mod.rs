@@ -21,7 +21,24 @@ impl<'a> Entry<'a> {
 
     fn fields(entry: &'a str) -> Vec<&'a str> {
         let trimmed = entry.trim_left();
-        Entry::splitn_whitespace(trimmed, 6)
+        match trimmed.chars().next().unwrap() {
+            '@' => Entry::nicknamed_fields(trimmed),
+            _ => Entry::splitn_whitespace(trimmed, 6),
+        }
+    }
+
+    fn nicknamed_fields(trimmed: &str) -> Vec<&str> {
+        let split = Entry::splitn_whitespace(trimmed, 2);
+        let mut fields = match split[0] {
+            "@yearly" | "@annually" => vec!["0", "0", "1", "1", "*"],
+            "@monthly" => vec!["0", "0", "1", "*", "*"],
+            "@weekly" => vec!["0", "0", "*", "*", "0"],
+            "@daily" => vec!["0", "0", "*", "*", "*"],
+            "@hourly" => vec!["0", "*", "*", "*", "*"],
+            value => panic!("Unhandled datetime nickname ‘{}’", value),
+        };
+        fields.push(split[1]);
+        fields
     }
 
     fn splitn_whitespace(entry: &str, max_entries: usize) -> Vec<&str> {
@@ -58,5 +75,17 @@ mod tests {
     fn should_split_into_six_fields() {
         let actual = Entry::fields("  1  2   3 4 5   command  with   spaces  ");
         assert_eq!(actual, vec!["1", "2", "3", "4", "5", "command  with   spaces  "]);
+    }
+
+    #[test]
+    fn should_handle_datetime_nicknames() {
+        let actual = Entry::fields("@yearly   command  with  spaces ");
+        assert_eq!(actual, vec!["0", "0", "1", "1", "*", "command  with  spaces "]);
+    }
+
+    #[test]
+    #[should_panic(expected = "Unhandled datetime nickname ‘@reboot’")]
+    fn should_fail_on_reboot_nickname() {
+        Entry::fields("@reboot command");
     }
 }
