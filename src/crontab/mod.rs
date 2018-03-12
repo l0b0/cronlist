@@ -42,14 +42,9 @@ mod tests {
 
     #[test]
     fn should_ignore_empty_lines() {
-        let actual = Crontab::new(
-            "1 2 3 4 5 first
-
-2 3 4 5 6 second
-",
-        );
-        assert_eq!(actual.entries.len(), 2);
-        assert_eq!(actual.entries[0].command, "first");
-        assert_eq!(actual.entries[1].command, "second");
+        let crontab = ["", " \t \t", "1 2 3 4 5 command", " ", ""].join("\n");
+        let actual = Crontab::new(&crontab);
+        assert_eq!(actual.entries.len(), 1);
+        assert_eq!(actual.entries[0].command, "command");
     }
 }
