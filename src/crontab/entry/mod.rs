@@ -20,13 +20,13 @@ impl<'a> Entry<'a> {
     }
 
     fn fields(entry: &'a str) -> Vec<&'a str> {
-        Entry::splitn_whitespace(entry, 6)
+        let trimmed = entry.trim_left();
+        Entry::splitn_whitespace(trimmed, 6)
     }
 
     fn splitn_whitespace(entry: &str, max_entries: usize) -> Vec<&str> {
         let mut last_whitespace = false;
         entry
-            .trim_left()
             .splitn(max_entries, |character: char| {
                 if character.is_whitespace() {
                     if last_whitespace {
