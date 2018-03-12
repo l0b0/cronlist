@@ -22,13 +22,13 @@ impl<'a> Entry<'a> {
     fn fields(entry: &'a str) -> Vec<&'a str> {
         let trimmed = entry.trim_left();
         match trimmed.chars().next().unwrap() {
-            '@' => Entry::nicknamed_fields(trimmed),
+            '@' => Entry::split_with_datetime_nickname(trimmed),
             _ => Entry::splitn_whitespace(trimmed, 6),
         }
     }
 
-    fn nicknamed_fields(trimmed: &str) -> Vec<&str> {
-        let split = Entry::splitn_whitespace(trimmed, 2);
+    fn split_with_datetime_nickname(entry: &str) -> Vec<&str> {
+        let split = Entry::splitn_whitespace(entry, 2);
         let mut fields = match split[0] {
             "@yearly" | "@annually" => vec!["0", "0", "1", "1", "*"],
             "@monthly" => vec!["0", "0", "1", "*", "*"],
