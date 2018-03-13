@@ -28,7 +28,7 @@ impl Recurrence {
         }
     }
 
-    fn next_match(&self, after: NaiveDateTime) -> NaiveDateTime {
+    pub fn next_match(&self, after: NaiveDateTime) -> NaiveDateTime {
         let next_minute = NextPeriod::new(&(after.minute() as u8 + 1), &self.minutes);
         let next_hour = NextPeriod::new(&(after.hour() as u8 + next_minute.overflow as u8), &self.hours);
         let next_time_of_day = NaiveTime::from_hms(next_hour.period as u32, next_minute.period as u32, 0);

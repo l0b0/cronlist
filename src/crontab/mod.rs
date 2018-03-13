@@ -1,5 +1,6 @@
 mod entry;
 
+use chrono::NaiveDateTime;
 use crontab::entry::Entry;
 
 pub struct Crontab<'a> {
@@ -18,11 +19,29 @@ impl<'a> Crontab<'a> {
                 .collect(),
         }
     }
+
+    fn next_run(&self, from: NaiveDateTime) -> Run {
+        self.entries
+            .iter()
+            .map(|entry| Run {
+                entry: &entry,
+                datetime: entry.recurrence.next_match(from),
+            })
+            .min_by(|this, other| this.datetime.cmp(&other.datetime))
+            .unwrap()
+    }
+}
+
+struct Run<'a> {
+    entry: &'a Entry<'a>,
+    datetime: NaiveDateTime,
 }
 
 #[cfg(test)]
 mod tests {
     use super::Crontab;
+    use chrono::NaiveDate;
+    use chrono::NaiveDateTime;
     use crontab::entry::Entry;
 
     #[test]
@@ -55,5 +74,14 @@ mod tests {
         let actual = Crontab::new(&crontab);
         assert_eq!(actual.entries.len(), 1);
         assert_eq!(actual.entries[0].command, "command");
+    }
+
+    #[test]
+    fn should_get_next_run() {
+        let crontab = ["0 * * * * first", "30 * * * * second"].join("\n");
+        let crontab = Crontab::new(&crontab);
+        let next_run = crontab.next_run(NaiveDate::from_ymd(2000, 1, 1).and_hms(0, 10, 0));
+        assert_eq!(next_run.entry.command, "second");
+        assert_eq!(next_run.datetime, NaiveDate::from_ymd(2000, 1, 1).and_hms(0, 30, 0));
     }
 }

@@ -5,7 +5,7 @@ mod stepped_range;
 use self::recurrence::Recurrence;
 
 pub struct Entry<'a> {
-    recurrence: Recurrence,
+    pub recurrence: Recurrence,
     pub command: &'a str,
 }
 
