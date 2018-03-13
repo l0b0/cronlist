@@ -59,7 +59,7 @@ struct NextPeriod {
 impl NextPeriod {
     fn new(after: &u8, possibilities: &Vec<u8>) -> NextPeriod {
         for period in possibilities {
-            if period > after {
+            if period >= after {
                 return NextPeriod {
                     period: period.clone(),
                     overflow: 0,
@@ -97,7 +97,55 @@ mod tests {
     }
 
     #[test]
-    fn should_get_next_occurrence() {
+    fn should_get_occurrence_next_minute() {
+        let recurrence = Recurrence {
+            minutes: vec![0, 1],
+            hours: vec![0],
+            days_of_month: vec![1],
+            months: vec![1],
+            days_of_week: vec![0, 1, 2, 3, 4, 5, 6],
+        };
+        let now = NaiveDate::from_ymd(2000, 1, 1).and_hms(0, 0, ANY_SECOND);
+        assert_eq!(
+            recurrence.next_match(now),
+            NaiveDate::from_ymd(2000, 1, 1).and_hms(0, 1, 0)
+        );
+    }
+
+    #[test]
+    fn should_get_occurrence_across_hour_boundary() {
+        let recurrence = Recurrence {
+            minutes: vec![0],
+            hours: vec![1],
+            days_of_month: vec![1],
+            months: vec![1],
+            days_of_week: vec![0, 1, 2, 3, 4, 5, 6],
+        };
+        let now = NaiveDate::from_ymd(2000, 1, 1).and_hms(0, 59, ANY_SECOND);
+        assert_eq!(
+            recurrence.next_match(now),
+            NaiveDate::from_ymd(2000, 1, 1).and_hms(1, 0, 0)
+        );
+    }
+
+    #[test]
+    fn should_get_occurrence_across_day_boundary() {
+        let recurrence = Recurrence {
+            minutes: vec![0],
+            hours: vec![0],
+            days_of_month: vec![2],
+            months: vec![1],
+            days_of_week: vec![0, 1, 2, 3, 4, 5, 6],
+        };
+        let now = NaiveDate::from_ymd(2000, 1, 1).and_hms(0, 0, ANY_SECOND);
+        assert_eq!(
+            recurrence.next_match(now),
+            NaiveDate::from_ymd(2000, 1, 2).and_hms(0, 0, 0)
+        );
+    }
+
+    #[test]
+    fn should_get_occurrence_across_year_boundary() {
         let recurrence = Recurrence {
             minutes: vec![0],
             hours: vec![0],
@@ -121,7 +169,7 @@ mod tests {
 
     #[test]
     fn should_get_next_period_with_overflow() {
-        let next = NextPeriod::new(&45, &vec![15, 45]);
+        let next = NextPeriod::new(&46, &vec![15, 45]);
         assert_eq!(next.period, 15);
         assert_eq!(next.overflow, 1);
     }
