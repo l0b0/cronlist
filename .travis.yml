@@ -5,7 +5,6 @@ rust:
   - stable
   - beta
   - nightly
-cache: cargo
 sudo: required
 before_script:
   - cargo --version
