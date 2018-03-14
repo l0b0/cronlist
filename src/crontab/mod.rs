@@ -8,7 +8,7 @@ pub struct Crontab<'a> {
 }
 
 impl<'a> Crontab<'a> {
-    fn new(input: &str) -> Crontab {
+    pub fn new(input: &str) -> Crontab {
         Crontab {
             entries: input
                 .lines()
@@ -20,7 +20,7 @@ impl<'a> Crontab<'a> {
         }
     }
 
-    fn next_run(&self, from: NaiveDateTime) -> Run {
+    pub fn next_run(&self, from: NaiveDateTime) -> Run {
         self.entries
             .iter()
             .map(|entry| Run {
@@ -32,9 +32,9 @@ impl<'a> Crontab<'a> {
     }
 }
 
-struct Run<'a> {
-    entry: &'a Entry<'a>,
-    datetime: NaiveDateTime,
+pub struct Run<'a> {
+    pub entry: &'a Entry<'a>,
+    pub datetime: NaiveDateTime,
 }
 
 #[cfg(test)]
