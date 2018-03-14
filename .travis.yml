@@ -1,6 +1,7 @@
 language: rust
 branches:
-  only: /.*/
+  only:
+    - /.*/
 rust:
   - stable
   - beta
