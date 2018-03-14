@@ -75,6 +75,10 @@ impl DateTimeFieldParser {
         } else {
             values.push(last_value);
         }
+
+        self.verify_range(values[0]);
+        self.verify_range(values[values.len() - 1]);
+
         values
     }
 
