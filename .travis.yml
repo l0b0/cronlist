@@ -1,9 +1,26 @@
-language: bash
+language: rust
 branches:
   only: /.*/
+rust:
+  - stable
+  - beta
+  - nightly
+cache: cargo
+before_script:
+  - cargo --version
+  - rustc --version
 script:
-  - docker run --rm "--volume=${PWD}:/usr/local/src/project" --workdir=/usr/local/src/project rust:latest sh -c 'cargo --version && rustc --version && cargo test'
-  - docker run --rm "--volume=${PWD}:/usr/local/src/project" --workdir=/usr/local/src/project rust:latest sh -c 'rustup default nightly && cargo install --force rustfmt-nightly && rustfmt --version && find . -name '*.rs' | xargs rustfmt && git diff --exit-code'
-sudo: required
-services:
-  - docker
+  - cargo build --verbose
+  - cargo test --verbose
+  - |
+    if [[ "$TRAVIS_RUST_VERSION" = stable ]]; then
+      cargo tarpaulin --no-count --skip-clean --out Xml &&
+      bash <(curl -s https://codecov.io/bash)
+    fi
+  - |
+    if [[ "$TRAVIS_RUST_VERSION" = nightly ]]; then
+      cargo install --force rustfmt-nightly &&
+      rustfmt --version &&
+      find . -name '*.rs' | xargs rustfmt &&
+      git diff --exit-code
+    fi
