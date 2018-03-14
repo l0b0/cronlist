@@ -58,7 +58,7 @@
       <pane id="Scratches"/>
     </panes>
   </component>
-  <component name="RunManager" selected="Unknown.Build All1152694020">
+  <component name="RunManager">
     <configuration default="false" name="cronlist" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS="FALSE" PROJECT_NAME="cronlist" TARGET_NAME="cronlist" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="cronlist" RUN_TARGET_NAME="cronlist">
       <envs/>
       <method/>
