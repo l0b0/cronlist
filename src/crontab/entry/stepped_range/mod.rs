@@ -25,7 +25,7 @@ where
     T: Debug,
     T: Integer,
 {
-    fn new(start: T, end: T, step: T) -> SteppedRange<T> {
+    pub fn new(start: T, end: T, step: T) -> SteppedRange<T> {
         assert_ne!(step, T::zero());
         SteppedRange { start, end, step }
     }

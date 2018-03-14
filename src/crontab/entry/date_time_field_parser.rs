@@ -67,11 +67,7 @@ impl DateTimeFieldParser {
         };
 
         // TODO: Use step_by when stable
-        let mut values: Vec<u8> = SteppedRange {
-            start: values.start,
-            end: values.end,
-            step,
-        }.collect();
+        let mut values: Vec<u8> = SteppedRange::new(values.start, values.end, step).collect();
 
         let last_value = values.pop().unwrap();
         if last_value == self.range.end && self.wrap_around_at_end {
