@@ -78,9 +78,45 @@ mod tests {
     }
 
     #[test]
-    fn should_handle_datetime_nicknames() {
-        let actual = Entry::fields("@yearly   command  with  spaces ");
-        assert_eq!(actual, vec!["0", "0", "1", "1", "*", "command  with  spaces "]);
+    fn should_handle_split_entry_with_nickname_into_six_fields() {
+        let actual = Entry::fields("@yearly   command   with   spaces");
+        assert_eq!(actual, vec!["0", "0", "1", "1", "*", "command   with   spaces"]);
+    }
+
+    #[test]
+    fn should_handle_yearly_nickname() {
+        let actual = Entry::fields("@yearly command");
+        assert_eq!(actual, vec!["0", "0", "1", "1", "*", "command"]);
+    }
+
+    #[test]
+    fn should_handle_annually_nickname() {
+        let actual = Entry::fields("@annually command");
+        assert_eq!(actual, vec!["0", "0", "1", "1", "*", "command"]);
+    }
+
+    #[test]
+    fn should_handle_monthly_nickname() {
+        let actual = Entry::fields("@monthly command");
+        assert_eq!(actual, vec!["0", "0", "1", "*", "*", "command"]);
+    }
+
+    #[test]
+    fn should_handle_weekly_nickname() {
+        let actual = Entry::fields("@weekly command");
+        assert_eq!(actual, vec!["0", "0", "*", "*", "0", "command"]);
+    }
+
+    #[test]
+    fn should_handle_daily_nickname() {
+        let actual = Entry::fields("@daily command");
+        assert_eq!(actual, vec!["0", "0", "*", "*", "*", "command"]);
+    }
+
+    #[test]
+    fn should_handle_hourly_nickname() {
+        let actual = Entry::fields("@hourly command");
+        assert_eq!(actual, vec!["0", "*", "*", "*", "*", "command"]);
     }
 
     #[test]
