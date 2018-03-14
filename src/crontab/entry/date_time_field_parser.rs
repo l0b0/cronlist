@@ -26,7 +26,7 @@ impl DateTimeFieldParser {
         let mut values = Vec::with_capacity((self.range.end - self.range.start) as usize);
 
         string_value
-            .split(",")
+            .split(',')
             .for_each(|part| values.append(&mut self.parse_list_entry(part)));
 
         values.sort_unstable();
@@ -43,29 +43,23 @@ impl DateTimeFieldParser {
             .replace("*", &format!("{}-{}", self.range.start, self.range.end - 1));
 
         let values = match values.to_lowercase().as_ref() {
-            "jan" => "1",
-            "feb" => "2",
-            "mar" => "3",
-            "apr" => "4",
-            "may" => "5",
-            "jun" => "6",
+            "sun" => "0",
+            "jan" | "mon" => "1",
+            "feb" | "tue" => "2",
+            "mar" | "wed" => "3",
+            "apr" | "thu" => "4",
+            "may" | "fri" => "5",
+            "jun" | "sat" => "6",
             "jul" => "7",
             "aug" => "8",
             "sep" => "9",
             "oct" => "10",
             "nov" => "11",
             "dec" => "12",
-            "sun" => "0",
-            "mon" => "1",
-            "tue" => "2",
-            "wed" => "3",
-            "thu" => "4",
-            "fri" => "5",
-            "sat" => "6",
             _ => &values,
         };
 
-        let values: Range<u8> = self.parse_range(&values);
+        let values: Range<u8> = self.parse_range(values);
 
         let step = match parts.next() {
             Some(string_value) => string_value.parse::<u8>().unwrap(),

@@ -31,8 +31,8 @@ impl Recurrence {
     pub fn next_match(&self, after: NaiveDateTime) -> NaiveDateTime {
         let next_minute = NextPeriod::new(&(after.minute() as u8 + 1), &self.minutes);
         let next_hour = NextPeriod::new(&(after.hour() as u8 + next_minute.overflow as u8), &self.hours);
-        let next_time_of_day = NaiveTime::from_hms(next_hour.period as u32, next_minute.period as u32, 0);
-        let mut current = after.date().and_time(next_time_of_day) + Duration::days(next_hour.overflow as i64);
+        let next_time_of_day = NaiveTime::from_hms(u32::from(next_hour.period), u32::from(next_minute.period), 0);
+        let mut current = after.date().and_time(next_time_of_day) + Duration::days(i64::from(next_hour.overflow));
 
         while !self.matches(current) {
             current += Duration::days(1);
@@ -57,19 +57,19 @@ struct NextPeriod {
 }
 
 impl NextPeriod {
-    fn new(after: &u8, possibilities: &Vec<u8>) -> NextPeriod {
+    fn new(after: &u8, possibilities: &[u8]) -> NextPeriod {
         for period in possibilities {
             if period >= after {
                 return NextPeriod {
-                    period: period.clone(),
+                    period: *period,
                     overflow: 0,
                 };
             }
         }
-        return NextPeriod {
-            period: possibilities[0].clone(),
+        NextPeriod {
+            period: possibilities[0],
             overflow: 1,
-        };
+        }
     }
 }
 

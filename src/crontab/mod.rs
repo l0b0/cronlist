@@ -24,7 +24,7 @@ impl<'a> Crontab<'a> {
         self.entries
             .iter()
             .map(|entry| Run {
-                entry: &entry,
+                entry,
                 datetime: entry.recurrence.next_match(from),
             })
             .min_by(|this, other| this.datetime.cmp(&other.datetime))
