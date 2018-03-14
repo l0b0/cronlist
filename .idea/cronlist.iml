@@ -2,7 +2,7 @@
 <module type="CPP_MODULE" version="4">
   <component name="FacetManager">
     <facet type="Python" name="Python">
-      <configuration sdkName="Python 3.6 (insecure-links-highlighter)"/>
+      <configuration sdkName=""/>
     </facet>
   </component>
   <component name="NewModuleRootManager">
@@ -10,7 +10,6 @@
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false"/>
       <sourceFolder url="file://$MODULE_DIR$/cronlist.c" isTestSource="false"/>
     </content>
-    <orderEntry type="library" name="Python 3.6 (insecure-links-highlighter) interpreter library" level="application"/>
     <orderEntry type="module-library">
       <library name="Header Search Paths">
         <CLASSES>
