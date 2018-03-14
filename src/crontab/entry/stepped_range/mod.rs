@@ -71,7 +71,6 @@ mod tests {
     #[test]
     #[should_panic]
     fn should_fail_with_step_of_zero() {
-        let mut range = SteppedRange::new(0, 0, 0);
-        range.next();
+        SteppedRange::new(0, 0, 0);
     }
 }
