@@ -1,4 +1,6 @@
 language: bash
+branches:
+  only: /.*/
 script:
   - docker run --rm "--volume=${PWD}:/usr/local/src/project" --workdir=/usr/local/src/project rust:latest sh -c 'cargo --version && rustc --version && cargo test'
   - docker run --rm "--volume=${PWD}:/usr/local/src/project" --workdir=/usr/local/src/project rust:latest sh -c 'rustup default nightly && cargo install --force rustfmt-nightly && rustfmt --version && find . -name '*.rs' | xargs rustfmt && git diff --exit-code'
