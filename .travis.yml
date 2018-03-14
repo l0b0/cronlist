@@ -15,15 +15,15 @@ script:
   - cargo build --verbose
   - cargo test --verbose
   - |
-  if [[ "$TRAVIS_RUST_VERSION" = stable ]]; then
-    cargo install cargo-tarpaulin &&
-    cargo tarpaulin --no-count --skip-clean --out Xml &&
-    bash <(curl -s https://codecov.io/bash)
-  fi
+    if [[ "$TRAVIS_RUST_VERSION" = stable ]]; then
+      cargo install cargo-tarpaulin &&
+      cargo tarpaulin --no-count --skip-clean --out Xml &&
+      bash <(curl -s https://codecov.io/bash)
+    fi
   - |
-  if [[ "$TRAVIS_RUST_VERSION" = nightly ]]; then
-    cargo install --force rustfmt-nightly &&
-    rustfmt --version &&
-    find . -name '*.rs' | xargs rustfmt &&
-    git diff --exit-code
-  fi
+    if [[ "$TRAVIS_RUST_VERSION" = nightly ]]; then
+      cargo install --force rustfmt-nightly &&
+      rustfmt --version &&
+      find . -name '*.rs' | xargs rustfmt &&
+      git diff --exit-code
+    fi
