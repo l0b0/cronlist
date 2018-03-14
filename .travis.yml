@@ -1,4 +1,6 @@
 language: rust
+branches:
+  only: /.*/
 rust:
   - stable
   - beta
