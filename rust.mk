@@ -7,6 +7,10 @@ all: build
 build:
 	cargo build
 
+.PHONY: release
+release:
+	cargo build --release
+
 .PHONY: test
 test:
 	cargo test
