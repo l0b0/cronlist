@@ -14,3 +14,20 @@ This implementation is not timezone aware, so don't expect it to work in the pre
     git submodule update --init
     make
     sudo make install
+
+## Rust alpha notes
+
+Build, test, lint & format:
+
+    rustup default nightly
+    rustup component add rustfmt-preview
+    cargo install clippy
+    make --file=rust.mk test lint
+
+Build optimized binary:
+
+    make --file=rust.mk release
+
+Run:
+
+    crontab -l | ./target/release/cronlist
