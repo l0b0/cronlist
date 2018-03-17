@@ -20,7 +20,7 @@ script:
     fi
   - |
     if [[ "$TRAVIS_RUST_VERSION" = nightly ]]; then
-      cargo install --force rustfmt-nightly &&
+      rustup component add rustfmt-preview &&
       rustfmt --version &&
       find . -name '*.rs' | xargs rustfmt &&
       git diff --exit-code

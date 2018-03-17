@@ -74,13 +74,19 @@ mod tests {
     #[test]
     fn should_split_into_six_fields() {
         let actual = Entry::fields("  1  2   3 4 5   command  with   spaces  ");
-        assert_eq!(actual, vec!["1", "2", "3", "4", "5", "command  with   spaces  "]);
+        assert_eq!(
+            actual,
+            vec!["1", "2", "3", "4", "5", "command  with   spaces  "]
+        );
     }
 
     #[test]
     fn should_handle_split_entry_with_nickname_into_six_fields() {
         let actual = Entry::fields("@yearly   command   with   spaces");
-        assert_eq!(actual, vec!["0", "0", "1", "1", "*", "command   with   spaces"]);
+        assert_eq!(
+            actual,
+            vec!["0", "0", "1", "1", "*", "command   with   spaces"]
+        );
     }
 
     #[test]
