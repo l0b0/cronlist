@@ -82,9 +82,6 @@ mod tests {
         let crontab = Crontab::new(&crontab);
         let next_run = crontab.next_run(NaiveDate::from_ymd(2000, 1, 1).and_hms(0, 10, 0));
         assert_eq!(next_run.entry.command, "second");
-        assert_eq!(
-            next_run.datetime,
-            NaiveDate::from_ymd(2000, 1, 1).and_hms(0, 30, 0)
-        );
+        assert_eq!(next_run.datetime, NaiveDate::from_ymd(2000, 1, 1).and_hms(0, 30, 0));
     }
 }
