@@ -1,7 +1,7 @@
-mod entry;
-
 use chrono::NaiveDateTime;
 use crontab::entry::Entry;
+
+mod entry;
 
 pub struct Crontab<'a> {
     entries: Vec<Entry<'a>>,

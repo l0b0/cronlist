@@ -1,8 +1,8 @@
+use self::recurrence::Recurrence;
+
 mod date_time_field_parser;
 mod recurrence;
 mod stepped_range;
-
-use self::recurrence::Recurrence;
 
 pub struct Entry<'a> {
     pub recurrence: Recurrence,

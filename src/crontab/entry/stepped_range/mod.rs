@@ -1,9 +1,8 @@
 extern crate num;
 
+use self::num::Integer;
 use std::fmt::Debug;
 use std::ops::Add;
-
-use self::num::Integer;
 
 pub struct SteppedRange<T>
 where

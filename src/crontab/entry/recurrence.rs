@@ -75,9 +75,8 @@ impl NextPeriod {
 
 #[cfg(test)]
 mod tests {
-    use chrono::prelude::*;
-
     use super::{NextPeriod, Recurrence};
+    use chrono::prelude::*;
 
     const ANY_SECOND: u32 = 59;
 
