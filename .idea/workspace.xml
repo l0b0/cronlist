@@ -24,6 +24,9 @@
   <component name="FavoritesManager">
     <favorites_list name="cronlist"/>
   </component>
+  <component name="FileEditorManager">
+    <leaf/>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$"/>
   </component>
@@ -33,21 +36,11 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds"/>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true"/>
   <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1">
-      <abbreviatePackageNames/>
+    <navigator proportions="" version="1">
       <autoscrollFromSource ProjectPane="true"/>
-      <autoscrollToSource/>
-      <flattenPackages/>
       <foldersAlwaysOnTop value="true"/>
-      <hideEmptyPackages/>
-      <manualOrder/>
-      <showLibraryContents/>
-      <showMembers/>
-      <showModules/>
-      <sortByType/>
     </navigator>
     <panes>
       <pane id="PackagesPane"/>
@@ -55,7 +48,6 @@
         <subPane/>
       </pane>
       <pane id="Scope"/>
-      <pane id="Scratches"/>
     </panes>
   </component>
   <component name="RunManager">
@@ -68,16 +60,11 @@
       <method/>
     </configuration>
   </component>
-  <component name="ShelveChangesManager" show_recycled="false">
-    <option name="remove_strategy" value="false"/>
-  </component>
   <component name="SvnConfiguration">
     <configuration/>
   </component>
   <component name="ToolWindowManager">
-    <editor active="false"/>
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0" sideWeight="0.5" order="0" side_tool="false" content_ui="combo"/>
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -93,9 +80,5 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000"/>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager/>
-    <watches-manager/>
   </component>
 </project>
