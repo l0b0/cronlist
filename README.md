@@ -21,7 +21,7 @@ Build, test, lint & format:
 
     rustup default nightly
     rustup component add rustfmt-preview
-    cargo install clippy
+    cargo install --force clippy
     make --file=rust.mk test lint
 
 Build optimized binary:
