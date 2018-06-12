@@ -46,8 +46,11 @@ impl Recurrence {
         let day_of_month = &(instant.day() as u8);
         let month = &(instant.month() as u8);
         let day_of_week = &(instant.weekday() as u8);
-        self.minutes.contains(minute) && self.hours.contains(hour) && self.days_of_month.contains(day_of_month)
-            && self.months.contains(month) && self.days_of_week.contains(day_of_week)
+        self.minutes.contains(minute)
+            && self.hours.contains(hour)
+            && self.days_of_month.contains(day_of_month)
+            && self.months.contains(month)
+            && self.days_of_week.contains(day_of_week)
     }
 }
 
