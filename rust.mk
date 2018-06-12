@@ -17,7 +17,7 @@ test:
 
 .PHONY: lint
 lint:
-	find . -name '*.rs' | xargs rustfmt
+	find . -name '*.rs' -exec rustfmt {} +
 	cargo clippy -- -D warnings
 
 .PHONY: clean
